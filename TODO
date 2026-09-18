@@ -1,0 +1,5 @@
+- Add the pending publisher on PyPI.
+- Create the GitHub repo hoofir/elering-py + add it as origin.
+- Create the GitHub pypi environment (Settings → Environments).
+- Push the branch first: git push -u origin main — triggers CI → let CI go green.
+- Then push the tag: git push origin v0.1.0 — triggers CD → build → publish → release.

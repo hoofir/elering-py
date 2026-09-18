@@ -1,0 +1,94 @@
+[project]
+name = "elering-py"
+version = "0.1.0"
+description = "Python client for the Elering dashboard open API"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = [
+    "elering",
+    "elering-py",
+    "py-elering",
+    "elering-api",
+    "elering API",
+    "elering open API",
+    "elering dashboard",
+    "estonia",
+    "energy",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/hoofir/elering-py"
+Issues = "https://github.com/hoofir/elering-py/issues"
+"Elering dashboard API" = "https://dashboard.elering.ee/assets/swagger-ui/index.html"
+
+[dependency-groups]
+dev = [
+    "deptry>=0.25.1",
+    "ipykernel>=7.1.0",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.10",
+    "twine>=6.2.0",
+    "ty>=0.0.59",
+]
+
+# -----------------------------------------
+
+[build-system]
+requires = ["uv-build<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "src"
+module-name = "elering"
+
+# -----------------------------------------
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not live'"
+markers = ["live: hits the real Elering API (deselected by default)"]
+
+# -----------------------------------------
+
+[tool.ruff.lint]
+ignore = ["E501"] # handled by the formatter
+select = ["C", "E", "F", "I"]
+extend-select = ["ANN", "PYI"]
+
+[tool.ruff.lint.per-file-ignores]
+# JSON payloads are genuinely untyped until the caller inspects them.
+"src/elering/_http.py" = ["ANN401"]
+"src/elering/_client.py" = ["ANN401"]
+"tests/**" = ["ANN"]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 72
+
+# -----------------------------------------
+
+[tool.ty]
+src.include = ["src", "tests"]
+terminal.output-format = "concise"
+
+[tool.ty.rules]
+unused-ignore-comment = "warn"
+possibly-unresolved-reference = "warn"
+possibly-missing-attribute = "error"
+possibly-missing-import = "error"
+missing-type-argument = "error"

@@ -1,0 +1,3086 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Elering dashboard API documentation",
+        "description": "This document describes different data sets that Elering Dashboard is providing.",
+        "contact": {
+            "name": "Elering AS",
+            "url": "https://elering.ee/",
+            "email": "klienditugi@elering.ee"
+        },
+        "version": "1.3.0"
+    },
+    "servers": [
+        {
+            "url": "https://dashboard.elering.ee"
+        }
+    ],
+    "paths": {
+        "/umm/gas/rss": {
+            "get": {
+                "tags": [
+                    "umm-rss-feed-controller"
+                ],
+                "summary": "RSS feed",
+                "operationId": "rss",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Rss"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/umm/gas/rss/aris": {
+            "get": {
+                "tags": [
+                    "umm-rss-feed-controller"
+                ],
+                "summary": "ARIS RSS feed",
+                "operationId": "arisRss",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Rss"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/umm/single/{id}": {
+            "get": {
+                "tags": [
+                    "umm-gas-controller"
+                ],
+                "summary": "This method gets all gas urgent market messages for selected event",
+                "description": "Gas system urgent market message history",
+                "operationId": "getSingle",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseUmmGasResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/umm/gas": {
+            "get": {
+                "tags": [
+                    "umm-gas-controller"
+                ],
+                "summary": "This method gets all gas urgent market messages for selected filters",
+                "description": "Gas system urgent market messages",
+                "operationId": "getAll",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "message statususes to fetch",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "current",
+                            "enum": [
+                                "current",
+                                "outdated"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "event_status",
+                        "in": "query",
+                        "description": "message event statuses to fetch",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "inactive",
+                                "dismissed"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "event_type",
+                        "in": "query",
+                        "description": "message event types to fetch",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Offshore_pipeline_unavailability",
+                                "Transmission_system_unavailability",
+                                "Storage_unavailability",
+                                "Injection_unavailability",
+                                "Withdrawal_unavailability",
+                                "Gas_treatment_plant_unavailability",
+                                "Regasification_plant_unavailability",
+                                "Compressor_station_unavailability",
+                                "Gas_production_field_unavailability",
+                                "Import_contract_curtailment",
+                                "Consumption_unavailability",
+                                "Other_unavailability"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "unavailability_type",
+                        "in": "query",
+                        "description": "message unavailability types to fetch",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "planned",
+                                "unplanned"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "affected_asset_name",
+                        "in": "query",
+                        "description": "message affected assets names to fetch",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "event_duration_date_time_start",
+                        "in": "query",
+                        "description": "message event duration date time start to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "event_duration_date_time_end",
+                        "in": "query",
+                        "description": "message event duration date time end to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "publication_datetime_start",
+                        "in": "query",
+                        "description": "message publication datetime start to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "publicationDateTimeDesc",
+                            "enum": [
+                                "publicationDateTimeDesc",
+                                "publicationDateTimeAsc",
+                                "eventStartDesc",
+                                "eventStartAsc",
+                                "eventStopDesc",
+                                "eventStopAsc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseWithMetaUmmGasResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/umm/gas/messages": {
+            "get": {
+                "tags": [
+                    "umm-gas-controller"
+                ],
+                "summary": "This method gets selected gas urgent market message data",
+                "description": "Gas system urgent market message details",
+                "operationId": "getMessageHistory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "event id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseUmmGasResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission data (5-minute intervals)",
+                "description": "This method gets cross-border electricity transmission 5-minute interval data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossBorder",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseTransmissionResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border/latest": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Latest cross-border electricity transmission data",
+                "description": "This method gets latest available cross-border electricty transmission data",
+                "operationId": "getCrossBorderLatest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json;charset=UTF-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseTransmissionResponseDto"
+                                }
+                            },
+                            "application/json; charset=UTF-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseTransmissionResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border/hourly": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission data (hourly)",
+                "description": "This method gets cross-border electricity transmission hourly data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossBorderHourly",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseTransmissionResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border/hourly/csv": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission data (hourly) in CSV file",
+                "description": "This method gets cross-border electricity transmission hourly data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getTransmissionHourlyAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "fields to include in the output",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "latvia",
+                                    "russia_narva",
+                                    "russia_pihkva",
+                                    "finland"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border/csv": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission data (5 minute intervals) in CSV file",
+                "description": "This method gets cross-border electricity transmission 5-minute interval data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getTransmissionAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "fields to include in the output",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "latvia",
+                                    "russia_narva",
+                                    "russia_pihkva",
+                                    "finland"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border-planned-trade": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border planned trade",
+                "description": "This method gets cross-border planned trade data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossborderPlannedTrade",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseCrossborderPlannedTradeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border-planned-trade/latest": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Latest available cross-border planned trade data",
+                "description": "This method gets latest available cross-border planned trade data",
+                "operationId": "getCrossborderPlannedTradeLatest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseCrossborderPlannedTradeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border-planned-trade/csv": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border planned trade in CSV file",
+                "description": "This method gets cross-border planned trade data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossborderPlannedTradeCsv",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "fields to include in csv output",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border-capacity": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission capacity data",
+                "description": "This method gets cross-border electricity transmission capacity data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossBorderCapacity",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleTransmissionGroupsCapacityDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border-capacity/{group}": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission capacity data for selected country",
+                "description": "This method gets cross-border electricity transmission capacity data for selected country for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossBorderCapacityByGroup",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "group to select data for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "FI",
+                                "LV",
+                                "RU"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseTransmissionCapacityDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transmission/cross-border-capacity/{group}/csv": {
+            "get": {
+                "tags": [
+                    "transmission-controller"
+                ],
+                "summary": "Cross-border electricity transmission capacity data for selected country in CSV file",
+                "description": "This method gets cross-border electricity transmission capacity data for selected country for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossBorderCapacityByGroupAsCsv",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "group to select data for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "FI",
+                                "LV",
+                                "RU"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "fields to include in the response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "in_atc",
+                                    "in_ntc",
+                                    "out_atc",
+                                    "out_ntc"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/system": {
+            "get": {
+                "tags": [
+                    "system-controller"
+                ],
+                "summary": "Power system data",
+                "description": "This method gets power system data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getSystem",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseSystemResponseWithSolarDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/with-plan": {
+            "get": {
+                "tags": [
+                    "system-controller"
+                ],
+                "summary": "Power system data and planned data",
+                "description": "This method gets power system data and planned data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getSystemWithPlan",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleSystemWithPlanResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/with-plan/csv": {
+            "get": {
+                "tags": [
+                    "system-controller"
+                ],
+                "summary": "Power system data and planned data in CSV file",
+                "description": "This method gets power system data and planned data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getSystemWithPlanAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "data fields to include in the csv file",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "production",
+                                    "consumption",
+                                    "renewable_production",
+                                    "solar_energy_production",
+                                    "solar_energy_forecast",
+                                    "solar_energy_forecast_operator",
+                                    "frequency",
+                                    "system_balance",
+                                    "ac_balance",
+                                    "productionPlan",
+                                    "consumptionPlan",
+                                    "renewable_production_plan",
+                                    "renewable_production_plan_operator",
+                                    "lossesPlan",
+                                    "system_balancePlan",
+                                    "ac_balancePlan"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/system/latest": {
+            "get": {
+                "tags": [
+                    "system-controller"
+                ],
+                "summary": "Latest available power system data",
+                "description": "This method gets latest available power system data",
+                "operationId": "getSystemLatest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseSystemResponseWithSolarDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/system/csv": {
+            "get": {
+                "tags": [
+                    "system-controller"
+                ],
+                "summary": "Power system data in CSV file",
+                "description": "This method gets power system data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getSystemAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "data fields to include in the csv file",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "production",
+                                    "consumption",
+                                    "renewable_production",
+                                    "frequency",
+                                    "system_balance",
+                                    "solar_energy_production",
+                                    "ac_balance"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/nps/turnover": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "NordPool day-ahead buy and sell volumes data",
+                "description": "This method gets NordPool day-ahead buy and sell volumes for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getTurnover",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleNpsTurnoverResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nps/turnover/{group}/latest": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "Latest available NordPool day-ahead buy and sell volumes for selected area",
+                "description": "This method gets latest Nordpool day-ahead buy and sell volumes for seleted area",
+                "operationId": "getGroupTurnoverLatest",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "group to fetch data for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "EE",
+                                "LT",
+                                "LV",
+                                "FI"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseNpsTurnoverDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nps/turnover/csv": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "NordPool day-ahead buy and sell volumes data in csv file",
+                "description": "This method gets Nordpool day-ahead buy and sell volumes for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ' ",
+                "operationId": "getTurnoverAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "in",
+                                    "out"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/nps/price": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "NordPool day-ahead price data",
+                "description": "This method gets NordPool day-ahead prices for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getPrice",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleNpsPriceResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nps/price/{group}/latest": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "Latest available NordPool day-ahead price for selected area",
+                "description": "This method gets latest available NordPool day-ahead price",
+                "operationId": "getGroupPriceLatest",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "group to fetch data for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "EE",
+                                "LT",
+                                "LV",
+                                "FI"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseNpsPriceDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nps/price/{group}/current": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "Current NordPool day-ahead price for selected area",
+                "description": "This method gets NordPool price for current hour",
+                "operationId": "getGroupPriceCurrent",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "group to fetch data for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "EE",
+                                "LT",
+                                "LV",
+                                "FI"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseNpsPriceDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nps/price/csv": {
+            "get": {
+                "tags": [
+                    "nps-controller"
+                ],
+                "summary": "NordPool day-ahead price data in CSV file",
+                "description": "This method gets NordPool day-ahead prices for selected time period in CSV file(maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getPriceAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "fields to include in file",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "ee",
+                                    "fi",
+                                    "lv",
+                                    "lt"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/nominations": {
+            "get": {
+                "tags": [
+                    "nominations-controller"
+                ],
+                "summary": "Gas system common zone nominations data",
+                "description": "This method gets gas system common zone nominations data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_1",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseNominationsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nominations/renominations": {
+            "get": {
+                "tags": [
+                    "renominations-controller"
+                ],
+                "summary": "Gas system common zone renominations data",
+                "description": "This method gets gas system common zone renominations data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_2",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseRenominationsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nominations/renominations/csv": {
+            "get": {
+                "tags": [
+                    "renominations-controller"
+                ],
+                "summary": "Gas system common zone renominations data in CSV file",
+                "description": "This method gets gas system common zone renominations data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "csv",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/nominations/csv": {
+            "get": {
+                "tags": [
+                    "nominations-controller"
+                ],
+                "summary": "Gas system common zone nominations data in CSV file",
+                "description": "This method gets gas system common zone nomination data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "csv_1",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/green/certificates": {
+            "get": {
+                "tags": [
+                    "green-controller"
+                ],
+                "summary": "Green certificates data",
+                "description": "This method gets all green certificates data for selected fields",
+                "operationId": "getCertificates",
+                "parameters": [
+                    {
+                        "name": "technology",
+                        "in": "query",
+                        "description": "technology fields",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "K\u00c3\u00b5ik tehnoloogiad"
+                        }
+                    },
+                    {
+                        "name": "fuel",
+                        "in": "query",
+                        "description": "fuel fields",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "K\u00c3\u00b5ik k\u00c3\u00bctused"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "transaction type fields",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "TRANSACTION",
+                            "enum": [
+                                "TRANSACTION",
+                                "PRODUCTION"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGreenResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas/border-trade/current": {
+            "get": {
+                "tags": [
+                    "gas-border-trade-controller"
+                ],
+                "summary": "Current gas common balancing zone cross-border trade data",
+                "description": "This method gets current gas common balancing zone cross-border trade data",
+                "operationId": "getCurrentGasBorderTrade",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasTradeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-transmission/cross-border": {
+            "get": {
+                "tags": [
+                    "gas-transmission-controller"
+                ],
+                "summary": "Gas transmission cross-border data",
+                "description": "This method gets gas transmission cross-border data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCrossBorder_1",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleGasTransmissionResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-transmission/cross-border/latest": {
+            "get": {
+                "tags": [
+                    "gas-transmission-controller"
+                ],
+                "summary": "Latest gas transmission cross-border data",
+                "description": "This method gets latest available gas transmission cross-border data",
+                "operationId": "getCrossBorderLatest_1",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleGasTransmissionLatestResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-transmission/cross-border/csv": {
+            "get": {
+                "tags": [
+                    "gas-transmission-controller"
+                ],
+                "summary": "Gas transmission cross-border data in CSV file",
+                "description": "This method gets gas transmission cross-border data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "wobbe_bc",
+                                    "wobbe_karksi",
+                                    "wobbe_narva",
+                                    "wobbe_varska",
+                                    "volume_bc",
+                                    "volume_karksi",
+                                    "volume_narva",
+                                    "volume_varska",
+                                    "gcv_bc",
+                                    "gcv_karksi",
+                                    "gcv_narva",
+                                    "gcv_varska",
+                                    "in_pressure_bc",
+                                    "out_pressure_bc",
+                                    "in_pressure_karksi",
+                                    "out_pressure_karksi",
+                                    "in_pressure_narva",
+                                    "out_pressure_narva",
+                                    "in_pressure_varska",
+                                    "out_pressure_varska"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/gas-trade": {
+            "get": {
+                "tags": [
+                    "gas-trade-controller"
+                ],
+                "summary": "GETBaltic price data",
+                "description": "This method gets GETBaltic price data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_3",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseSingleGasTradeResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-trade/{group}/latest": {
+            "get": {
+                "tags": [
+                    "gas-trade-controller"
+                ],
+                "summary": "Latest GETBaltic price data",
+                "description": "This method gets latest GETBaltic price data",
+                "operationId": "getGroupLatest",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "group to fetch data for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "COMMON",
+                                "LT",
+                                "LV",
+                                "EE",
+                                "FI"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasTradeDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-trade/csv": {
+            "get": {
+                "tags": [
+                    "gas-trade-controller"
+                ],
+                "summary": "GETBaltic price data in CSV file",
+                "description": "TThis method gets GETBaltic price data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllAsCSV_1",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "common_price",
+                                    "common_quantity",
+                                    "ee_price",
+                                    "ee_quantity",
+                                    "lv_price",
+                                    "lv_quantity",
+                                    "lt_price",
+                                    "lt_quantity",
+                                    "fi_price"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/gas-system": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Total domestic gas flow from transmission network",
+                "description": "This method gets total domestic gas flow from transmission network for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_4",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasSystemResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-system/m3": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Total domestic gas flow from transmission network in m3",
+                "description": "This method gets Total domestic gas flow from transmission network in m3 for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllM3",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasSystemM3ResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-system/m3/csv": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Total domestic gas flow from transmission network in m3 in CSV file",
+                "description": "This method gets Total domestic gas flow from transmission network in m3 for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllM3AsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "volume_dm"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/gas-system/latest": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Latest hourly domestic gas flow from transmission network",
+                "description": "This method gets latest hourly domestic gas flow from transmission network",
+                "operationId": "getLatest",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasSystemResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-system/daily": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Weighted average gross calorific value of gas entering the Estonian gas system (25/20)",
+                "description": "This method gets weighted average gross calorific value (25/20) of gas entering the Estonian gas system for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ' and 'yyyy-MM-dd'",
+                "operationId": "getDaily",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasSystemDailyResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-system/daily/csv": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Weighted average gross calorific value of gas entering the Estonian gas system in CSV file",
+                "description": "This method gets weighted average gross calorific value of gas entering the Estonian gas system for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ' and 'yyyy-MM-dd'",
+                "operationId": "getAllDailyAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "calorific_value",
+                                    "calorific_value_25_0"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/gas-system/daily-average": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Weighted average gross calorific value of gas entering the Estonian gas system (25/0)",
+                "description": "This method gets weighted average gross calorific value (25/0) of gas entering the Estonian gas system for selected time period .(maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ' and 'yyyy-MM-dd'",
+                "operationId": "getDailyAverage",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasSystemDailyAverageResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-system/csv": {
+            "get": {
+                "tags": [
+                    "gas-system-controller"
+                ],
+                "summary": "Total domestic gas flow from transmission network in CSV file",
+                "description": "This method gets total domestic gas flow from transmission network for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllAsCSV_2",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "value"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/gas-balance/price": {
+            "get": {
+                "tags": [
+                    "gas-balance-controller"
+                ],
+                "summary": "Gas balance price data ",
+                "description": "This method gets gas balance price data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_5",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseGasBalanceResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gas-balance/price/csv": {
+            "get": {
+                "tags": [
+                    "gas-balance-controller"
+                ],
+                "summary": "Gas balance price data in CSV file",
+                "description": "This method gets gas balance price data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllAsCSV_3",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "imbalance_buy_price",
+                                    "imbalance_sell_price"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/capacity/interruptible": {
+            "get": {
+                "tags": [
+                    "interruptible-capacity-controller"
+                ],
+                "summary": "Gas system interruptible capacity data",
+                "description": "This method gets gas system interruptible capacity data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_6",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseInterruptibleCapacityResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/capacity/interruptible/csv": {
+            "get": {
+                "tags": [
+                    "interruptible-capacity-controller"
+                ],
+                "summary": "Gas system interruptible capacity data in CSV file",
+                "description": "This method gets gas system interruptible capacity for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "csv_2",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/capacity/firm": {
+            "get": {
+                "tags": [
+                    "firm-capacity-controller"
+                ],
+                "summary": "Gas system firm capacity data",
+                "description": "This method gets gas system firm capacity data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_7",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseFirmCapacityResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/capacity/firm/csv": {
+            "get": {
+                "tags": [
+                    "firm-capacity-controller"
+                ],
+                "summary": "Gas system firm capacity data in CSV file",
+                "description": "This method gets gas system firm capacity data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "csv_3",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "default": [
+                                "[\"narva_technical_entry\"",
+                                "\"narva_booked_entry\"",
+                                "\"narva_available_entry\"",
+                                "\"varska_technical_entry\"",
+                                "\"varska_booked_entry\"",
+                                "\"varska_available_entry\"",
+                                "\"varska_technical_exit\"",
+                                "\"varska_booked_exit\"",
+                                "\"varska_available_exit\"",
+                                "\"balticconnector_technical_entry\"",
+                                "\"balticconnector_booked_entry\"",
+                                "\"balticconnector_available_entry\"",
+                                "\"balticconnector_technical_exit\"",
+                                "\"balticconnector_booked_exit\"",
+                                "\"balticconnector_available_exit\"",
+                                "\"production_technical\"",
+                                "\"production_booked\"",
+                                "\"production_available\"]"
+                            ],
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/balance": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Power system balancing data",
+                "description": "This method gets power system balance data for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAll_8",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseBalanceResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/total": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Power system physical balance data",
+                "description": "This method gets power system physical balance data total for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getTotal",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseBalanceTotalResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/total/latest": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Latest available physical balance data",
+                "description": "This method gets latest available physical balance data",
+                "operationId": "getLatestTotalDate",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseBalanceTotalResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/total/csv": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Power system physical balance data in CSV file",
+                "description": "This method gets power system physical balance for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ' ",
+                "operationId": "getTotalAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "data fields to include in the csv file",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "input_total",
+                                    "input_local",
+                                    "renewable_total",
+                                    "renewable_wind",
+                                    "renewable_hydro",
+                                    "renewable_bio",
+                                    "nonrenewable_total",
+                                    "output_total",
+                                    "export_total",
+                                    "consumption_local_total",
+                                    "renewable_solar",
+                                    "import_total"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/balance/csv": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Power system balancing data in CSV file",
+                "description": "This method gets power system balancing data for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getAllAsCSV_4",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Data fields to include in response",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "imbalance",
+                                    "imbalance_buy_price",
+                                    "imbalance_sell_price",
+                                    "regulate_up",
+                                    "regulate_system_up",
+                                    "regulate_down",
+                                    "regulate_system_down"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/balance/commerce": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Power system commercial balance data",
+                "description": "This method gets power system commercial balance for selected time period (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCommerce",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseBalanceCommerceResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/commerce/latest": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Latest available power system commercial balance data",
+                "description": "This method gets latest available power system commercial balance data",
+                "operationId": "getLatestCommenceDate",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiCollectionResponseBalanceCommerceResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/commerce/csv": {
+            "get": {
+                "tags": [
+                    "balance-controller"
+                ],
+                "summary": "Power system commercial balance data in CSV file",
+                "description": "This method gets power system commercial balance for selected time period in CSV file (maximum allowed time period per request is one year), accepted date formats are 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd'T'hh:mm:ssZ'",
+                "operationId": "getCommerceAsCSV",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "start time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-05-31T20:59:59.999Z"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "description": "end time for data",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2020-06-30T20:59:59.999Z"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "data fields to include in the csv file",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "ess_balance",
+                                    "import_total",
+                                    "import_latvia",
+                                    "import_finland",
+                                    "import_exchange",
+                                    "import_bilateral_contracts",
+                                    "export_total",
+                                    "export_latvia",
+                                    "export_finland",
+                                    "export_exchange",
+                                    "export_bilateral_contracts"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Rss": {},
+            "ApiCollectionResponseUmmGasResponseDto": {},
+            "ApiResponseWithMetaUmmGasResponseDto": {},
+            "ApiCollectionResponseTransmissionResponseDto": {},
+            "ApiCollectionResponseCrossborderPlannedTradeResponse": {},
+            "ApiResponseSingleTransmissionGroupsCapacityDto": {},
+            "ApiCollectionResponseTransmissionCapacityDto": {},
+            "ApiCollectionResponseSystemResponseWithSolarDto": {},
+            "ApiResponseSingleSystemWithPlanResponseDto": {},
+            "ApiResponseSingleNpsTurnoverResponseDto": {},
+            "ApiCollectionResponseNpsTurnoverDto": {},
+            "ApiResponseSingleNpsPriceResponseDto": {},
+            "ApiCollectionResponseNpsPriceDto": {},
+            "ApiCollectionResponseNominationsResponse": {},
+            "ApiCollectionResponseRenominationsResponse": {},
+            "ApiCollectionResponseGreenResponseDto": {},
+            "ApiCollectionResponseGasTradeResponse": {},
+            "ApiResponseSingleGasTransmissionResponseDto": {},
+            "ApiResponseSingleGasTransmissionLatestResponseDto": {},
+            "ApiResponseSingleGasTradeResponseDto": {},
+            "ApiCollectionResponseGasTradeDto": {},
+            "ApiCollectionResponseGasSystemResponseDto": {},
+            "ApiCollectionResponseGasSystemM3ResponseDto": {},
+            "ApiCollectionResponseGasSystemDailyResponseDto": {},
+            "ApiCollectionResponseGasSystemDailyAverageResponseDto": {},
+            "ApiCollectionResponseGasBalanceResponseDto": {},
+            "ApiCollectionResponseInterruptibleCapacityResponse": {},
+            "ApiCollectionResponseFirmCapacityResponse": {},
+            "ApiCollectionResponseBalanceResponseDto": {},
+            "ApiCollectionResponseBalanceTotalResponseDto": {},
+            "ApiCollectionResponseBalanceCommerceResponseDto": {}
+        }
+    }
+}
