@@ -1,13 +1,12 @@
 # elering-py
-
-[![PyPI](https://img.shields.io/pypi/v/elering-py.svg)](https://pypi.org/project/elering-py/)
+[![PyPI](https://img.shields.io/pypi/v/elering-py?label=PyPI)](https://pypi.org/project/elering-py/)
 [![CI](https://github.com/hoofir/elering-py/actions/workflows/ci.yml/badge.svg)](https://github.com/hoofir/elering-py/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Ruff](https://img.shields.io/badge/checks-ruff-purple)](https://github.com/astral-sh/ruff)
-[![ty](https://img.shields.io/badge/types-ty-purple)](https://github.com/microsoft/ty)
+[![Ruff](https://img.shields.io/badge/lint-ruff-purple)](https://github.com/astral-sh/ruff)
+[![Ruff](https://img.shields.io/badge/format-ruff-purple)](https://github.com/astral-sh/ruff)
+[![ty](https://img.shields.io/badge/type-ty-purple)](https://github.com/microsoft/ty)
 [![Deptry](https://img.shields.io/badge/deps-deptry-tomato)](https://github.com/fpgmaas/deptry)
 [![Pytest](https://img.shields.io/badge/tests-pytest-yellow)](https://github.com/pytest-dev/pytest)
-
 
 A small Python client for the [Elering dashboard open API](https://dashboard.elering.ee/assets/swagger-ui/index.html) — Estonian electricity and gas system data published by Elering AS.
 
