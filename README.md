@@ -2,11 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/elering-py.svg)](https://pypi.org/project/elering-py/)
 [![CI](https://github.com/hoofir/elering-py/actions/workflows/ci.yml/badge.svg)](https://github.com/hoofir/elering-py/actions/workflows/ci.yml)
-![Repo Size](https://img.shields.io/github/repo-size/hoofir/elering-py.svg)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/pypi/pyversions/elering-py.svg)](https://pypi.org/project/elering-py/)
-
-
 [![Ruff](https://img.shields.io/badge/checks-ruff-purple)](https://github.com/astral-sh/ruff)
 [![ty](https://img.shields.io/badge/types-ty-purple)](https://github.com/microsoft/ty)
 [![Deptry](https://img.shields.io/badge/deps-deptry-tomato)](https://github.com/fpgmaas/deptry)
