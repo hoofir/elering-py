@@ -1598,7 +1598,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "default": "K\u00c3\u00b5ik tehnoloogiad"
+                            "default": "K\u00f5ik tehnoloogiad"
                         }
                     },
                     {
@@ -1608,7 +1608,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "default": "K\u00c3\u00b5ik k\u00c3\u00bctused"
+                            "default": "K\u00f5ik k\u00fctused"
                         }
                     },
                     {

@@ -1,14 +1,14 @@
 OAS_URL = https://dashboard.elering.ee/v3/api-docs
 SPEC = spec/openapi.json
 
-spec: ## Refresh the OpenAPI spec with the latest version
-	curl -sSf "$(OAS_URL)" | uv run python -m json.tool > $(SPEC)
-
 spec-check: ## Fail if the OpenAPI spec is outdated
 	@curl -sSf "$(OAS_URL)" | uv run python -m json.tool > $(SPEC).live
 	@diff -u $(SPEC) $(SPEC).live > /dev/null && echo "Passed: spec is up to date" || \
 		(rm -f $(SPEC).live; echo "Failed: spec drifted -> run 'make spec'"; exit 1)
 	@rm -f $(SPEC).live
+
+spec: ## Refresh the OpenAPI spec with the latest version
+	curl -sSf "$(OAS_URL)" | uv run python -m json.tool > $(SPEC)
 
 # -----------------------------------------------------------
 
@@ -27,14 +27,11 @@ clean: ## Remove caches
 	rm -rf .ruff_cache .pytest_cache .mypy_cache
 	find . -type d -name __pycache__ -exec rm -rf {} +
 
-lint: ## Lint with ruff
-	uv run ruff check .
-
 format: ## Format with ruff
 	uv run ruff format .
 
 check: ## Lint, verify formatting, type-check and audit dependencies
-	uv run ruff check .
+	uv run ruff check --fix . 
 	uv run ruff format --check .
 	uv run ty check
 	uv run deptry .
